@@ -21,6 +21,9 @@ def report(stat: dict, output: str) -> None:
         "skipped": stat["skipped"]
     }
 
-    with open(output, "w", encoding="utf-8") as file:
-        json.dump(report, file, ensure_ascii=False, indent=4)
+    if output is None:
+        print(json.dumps(report, ensure_ascii=False, indent=4))
+    else:
+        with open(output, "w", encoding="utf-8") as file:
+            json.dump(report, file, ensure_ascii=False, indent=4)
     

@@ -20,7 +20,6 @@ def main(argv: list[str] | None = None) -> int:
         )
     analyze_parser.add_argument(
         "--output",
-        required=True
     )
     analyze_parser.add_argument(
         "--skip-invalid",
