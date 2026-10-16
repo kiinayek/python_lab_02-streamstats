@@ -1,16 +1,16 @@
 class StreamStatsError(Exception):
-    pass
+    """Базовый класс исключений"""
 
 
 class UnsupportedFormatError(StreamStatsError):
-    pass
+    """Неподдерживаемый формат файла"""
 
 class InvalidEventError(StreamStatsError):
-    pass
+    """Некорректное событие"""
 
 class InvalidTimestampError(StreamStatsError):
-    pass
+    """Некорректные дата/время"""
 
 class CLIConfigurationError(StreamStatsError):
-    pass
+    """Ошибки конфигурации командной строки"""
 

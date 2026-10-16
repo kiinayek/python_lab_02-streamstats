@@ -2,7 +2,7 @@ from collections.abc import Iterable
 
 
 def ini_stat() -> dict:
-    
+    """Создание словаря для хранения статистики"""
     return {
             "total": 0,
             "levels": {},
@@ -15,7 +15,7 @@ def ini_stat() -> dict:
 
 
 def update_stat(events: Iterable[dict], stat: dict) -> dict:
-    
+    """Обновление статистики на основе полученных событий"""
     for event in events:
         stat["total"] += 1
 
@@ -48,7 +48,7 @@ def update_stat(events: Iterable[dict], stat: dict) -> dict:
     return stat
 
 def top_sources(stat: dict, n: int=5) -> dict:
-
+    """Возвращает топ-N источников событий ERROR и CRITICAL"""
     result = dict(sorted(stat["error_sources"].items(), \
                           key=lambda x: (-x[1], x[0]))[:n])
     return result

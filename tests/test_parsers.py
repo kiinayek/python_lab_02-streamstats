@@ -9,6 +9,7 @@ from streamstats.readers import read_file
 
 
 def test_valid_event():
+    """Проверка создания корректного события"""
     raw = {
         "timestamp": "2026-10-13T10:00:00",
         "level": "INFO",
@@ -25,6 +26,7 @@ def test_valid_event():
 
 
 def test_invalid_level():
+    """Проверка обработки некорректного уровня события"""
     raw = {
         "timestamp": "2026-10-13T10:00:00",
         "level": "WRONG",
@@ -37,6 +39,7 @@ def test_invalid_level():
 
 
 def test_invalid_timestamp():
+    """Проверка обработки некорректных дата/время"""
     raw = {
         "timestamp": "not-a-date",
         "level": "INFO",
@@ -49,6 +52,7 @@ def test_invalid_timestamp():
 
 
 def test_invalid_source():
+    """Проверка обработки некорректного источника события"""
     raw = {
         "timestamp": "2026-10-13T10:00:00",
         "level": "INFO",
@@ -61,6 +65,7 @@ def test_invalid_source():
 
 
 def test_invalid_message():
+    """Проверка обработки некорректного сообщения события"""
     raw = {
         "timestamp": "2026-10-13T10:00:00",
         "level": "INFO",
@@ -73,6 +78,7 @@ def test_invalid_message():
 
 
 def test_invalid_json_obj():
+    """Проверка обработки некорректного JSON объекта"""
     raw = "im a json"
 
     with pytest.raises(InvalidEventError):
@@ -80,6 +86,7 @@ def test_invalid_json_obj():
 
 
 def test_read_csv(tmp_path):
+    """Проверка чтения корректных событий из CSV файла"""
     file = tmp_path / "events.csv"
     file.write_text(
         "timestamp,level,source,message\n"
@@ -99,6 +106,7 @@ def test_read_csv(tmp_path):
 
 
 def test_read_jsonl(tmp_path):
+    """Проверка чтения корректных событий из JSONL файла"""
     file = tmp_path / "events.jsonl"
     file.write_text(
         '{"timestamp":"2026-10-13T10:00:00","level":"INFO",'
@@ -119,6 +127,7 @@ def test_read_jsonl(tmp_path):
 
 
 def test_invalid_csv_without_skip(tmp_path):
+    """Проверка ошибки при некорректной строке CSV без пропуска"""
     file = tmp_path / "bad.csv"
     file.write_text(
         "timestamp,level,source,message\n"
@@ -134,6 +143,7 @@ def test_invalid_csv_without_skip(tmp_path):
 
 
 def test_invalid_csv_with_skip(tmp_path):
+    """Проверка пропуска некорректной строки CSV"""
     file = tmp_path / "bad.csv"
     file.write_text(
         "timestamp,level,source,message\n"
@@ -152,6 +162,7 @@ def test_invalid_csv_with_skip(tmp_path):
 
 
 def test_invalid_jsonl_without_skip(tmp_path):
+    """Проверка ошибки при некорректной строке JSONL без пропуска"""
     file = tmp_path / "bad.jsonl"
     file.write_text(
         '{"timestamp":"2026-10-13T10:00:00","level":"INFO",'
@@ -168,6 +179,7 @@ def test_invalid_jsonl_without_skip(tmp_path):
 
 
 def test_invalid_jsonl_with_skip(tmp_path):
+    """Проверка пропуска некорректной строки JSONL"""
     file = tmp_path / "bad.jsonl"
     file.write_text(
         '{"timestamp":"2026-10-13T10:00:00","level":"INFO",'
@@ -188,6 +200,7 @@ def test_invalid_jsonl_with_skip(tmp_path):
 
 
 def test_empty_csv(tmp_path):
+    """Проверка обработки пустого CSV файла"""
     file = tmp_path / "empty.csv"
     file.write_text("", encoding="utf-8")
 
@@ -200,6 +213,7 @@ def test_empty_csv(tmp_path):
 
 
 def test_empty_jsonl(tmp_path):
+    """Проверка обработки пустого JSONL файла"""
     file = tmp_path / "empty.jsonl"
     file.write_text("", encoding="utf-8")
 
@@ -212,6 +226,7 @@ def test_empty_jsonl(tmp_path):
 
 
 def test_csv_and_jsonl_same_stats(tmp_path):
+    """Проверка совпадения статистики для одинаковых CSV и JSONL файлов"""
     csv_file = tmp_path / "events.csv"
     jsonl_file = tmp_path / "events.jsonl"
 
@@ -242,6 +257,7 @@ def test_csv_and_jsonl_same_stats(tmp_path):
 
 
 def test_top_sources():
+    """Проверка определения топ-N источников ошибок"""
     stat = ini_stat()
 
     stat["error_sources"] = {
@@ -266,6 +282,7 @@ def test_top_sources():
 
 
 def test_first_and_last_timestamp():
+    """Проверка определения первой и последней временной метки"""
     stat = ini_stat()
 
     events = [

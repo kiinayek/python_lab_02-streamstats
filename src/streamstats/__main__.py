@@ -8,6 +8,7 @@ from .report import report
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Обработка аргументов командной строки и запуск анализа"""
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(dest="command", required=True)
 

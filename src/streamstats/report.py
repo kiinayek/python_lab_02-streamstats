@@ -4,6 +4,7 @@ from .analysis import top_sources
 
 
 def report(stat: dict, output: str) -> None:
+    """Формирует отчет и выводит его в JSON файл или в консоль"""
     report = {
         "total": stat["total"],
         "levels": stat["levels"],

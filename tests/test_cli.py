@@ -9,6 +9,7 @@ from streamstats.readers import read_file
 
 
 def test_cli_make_report(tmp_path):
+    """Проверка создания JSON отчета через CLI"""
     input_file = tmp_path / "events.csv"
     output_file = tmp_path / "report.json"
 
@@ -39,6 +40,7 @@ def test_cli_make_report(tmp_path):
 
 
 def test_cli_two_files(tmp_path):
+    """Проверка объединения статистики из двух файлов"""
     first_file = tmp_path / "first.csv"
     second_file = tmp_path / "second.csv"
     output_file = tmp_path / "report.json"
@@ -75,6 +77,7 @@ def test_cli_two_files(tmp_path):
 
 
 def test_cli_skip_invalid(tmp_path):
+    """Проверка работы CLI с пропуском некорректных строк"""
     input_file = tmp_path / "bad.csv"
     output_file = tmp_path / "report.json"
 
@@ -105,6 +108,7 @@ def test_cli_skip_invalid(tmp_path):
 
 
 def test_cli_invalid_without_skip(tmp_path):
+    """Проверка завершения CLI с кодом 2 при некорректных данных"""
     input_file = tmp_path / "bad.csv"
     output_file = tmp_path / "report.json"
 
@@ -129,6 +133,7 @@ def test_cli_invalid_without_skip(tmp_path):
 
 
 def test_invalid_jsonl_line_number(tmp_path):
+    """Проверка вывода номера строки при неверном JSON"""
     file = tmp_path / "bad.jsonl"
 
     valid_line = (
@@ -150,6 +155,7 @@ def test_invalid_jsonl_line_number(tmp_path):
 
 
 def test_invalid_timestamp_line_number(tmp_path):
+    """Проверка вывода номера строки при неверной дате/времеми"""
     file = tmp_path / "bad.jsonl"
 
     file.write_text(
@@ -170,6 +176,7 @@ def test_invalid_timestamp_line_number(tmp_path):
 
 
 def test_cli_unicode(tmp_path):
+    """Проверка сохранения Unicode символов в отчете"""
     input_file = tmp_path / "events.csv"
     output_file = tmp_path / "report.json"
 
@@ -198,6 +205,7 @@ def test_cli_unicode(tmp_path):
 
 
 def test_cli_empty_file(tmp_path):
+    """Проверка создания отчета для пустого файла"""
     input_file = tmp_path / "empty.csv"
     output_file = tmp_path / "report.json"
 

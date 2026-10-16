@@ -13,6 +13,7 @@ from .parsers import make_event
 logger = logging.getLogger(__name__)
 
 def read_file(fileformat: str, filename: str, skip_invalid: bool, stat: dict) -> Iterator[dict]:
+    """Построчно читает файл и возвращает корректные события"""
     with open(filename, encoding="utf-8", newline="") as file:
 
         if fileformat == "csv":

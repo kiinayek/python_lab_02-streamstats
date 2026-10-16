@@ -4,7 +4,7 @@ from .errors import InvalidEventError, InvalidTimestampError
 
 
 def make_event(raw: dict[str, str], line_number: int) -> dict:
-
+    """Проверяет данные события и преобразует их в нужный формат"""
     if not isinstance(raw, dict):
         raise InvalidEventError(
             f"Некорректное событие в строке {line_number}"
