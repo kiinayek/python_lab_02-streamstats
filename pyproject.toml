@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "streamstats"
+version = "1.0.0"
+description = "Streaming file analyzer"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Katia" }]
+
+[tool.setuptools.packages.find]
+where = ["src"]
