@@ -1,48 +1,65 @@
 # StreamStats
 
 Потоковый анализатор файлов CSV и JSONL.
+
 Программа читает события из входных файлов построчно, проверяет их корректность, собирает статистику и сохраняет результат в JSON-файл.
 
 # Требования
 
-- Python >= 3.10 
+- Python >= 3.10
 
 # Установка
 
-```git clone https://github.com/kiinayek/python_lab_02-streamstats.git
+```bash
+git clone https://github.com/kiinayek/python_lab_02-streamstats.git
 cd python_lab_02-streamstats
-python3 -m pip install -e . 
+python3 -m pip install -e .
 ```
 
 Проверить установку:
-```python3 -m streamstats --help
+
+```bash
+python3 -m streamstats --help
 ```
 
 # Запуск
 
 Общий формат команды:
-```python3 -m streamstats analyze INPUT [INPUT ...] --format FORMAT --output REPORT.json
+
+```bash
+python3 -m streamstats analyze INPUT [INPUT ...] --format FORMAT --output REPORT.json
 ```
 
 Где:
+
 - INPUT - один или несколько входных файлов;
 - FORMAT - формат входных файлов: csv или jsonl;
 - REPORT.json - файл, в который будет сохранён отчёт.
+
 Пример:
-```python3 -m streamstats analyze data.csv --format csv --output report.json
+
+```bash
+python3 -m streamstats analyze data.csv --format csv --output report.json
 ```
 
 Для нескольких файлов:
-```python3 -m streamstats analyze data1.csv data2.csv --format csv --output report.json
+
+```bash
+python3 -m streamstats analyze data1.csv data2.csv --format csv --output report.json
 ```
 
 # Пропуск некорректных строк
+
 По умолчанию при обнаружении некорректной строки программа прекращает обработку и возвращает код завершения 2.
+
 Для продолжения обработки используется параметр --skip-invalid:
-```python3 -m streamstats analyze data.csv --format csv --output report.json --skip-invalid
+
+```bash
+python3 -m streamstats analyze data.csv --format csv --output report.json --skip-invalid
 ```
 
 В этом режиме:
+
 - некорректная строка пропускается;
 - в журнал записывается предупреждение;
 - количество пропущенных строк сохраняется в поле skipped;
@@ -51,20 +68,25 @@ python3 -m pip install -e .
 # Формат входных данных
 
 Каждое событие должно содержать следующие поля:
+
 - timestamp - дата и время в формате ISO 8601;
 - level - уровень события: DEBUG, INFO, WARNING, ERROR или CRITICAL;
 - source - непустая строка с названием источника;
 - message - текст сообщения.
 
 CSV
-```timestamp,level,source,message
+
+```csv
+timestamp,level,source,message
 2026-10-01T10:00:00,INFO,server,Server started
 2026-10-01T10:05:00,ERROR,database,Connection failed
 2026-10-01T10:10:00,WARNING,server,High memory usage
 ```
 
 JSONL
-```{"timestamp": "2026-10-01T10:00:00", "level": "INFO", "source": "server", "message": "Server started"}
+
+```json
+{"timestamp": "2026-10-01T10:00:00", "level": "INFO", "source": "server", "message": "Server started"}
 {"timestamp": "2026-10-01T10:05:00", "level": "ERROR", "source": "database", "message": "Connection failed"}
 {"timestamp": "2026-10-01T10:10:00", "level": "WARNING", "source": "server", "message": "High memory usage"}
 ```
@@ -72,6 +94,7 @@ JSONL
 # Статистика
 
 Программа рассчитывает:
+
 - общее количество событий;
 - количество событий каждого уровня;
 - количество событий от каждого источника;
@@ -79,9 +102,13 @@ JSONL
 - время первого события;
 - время последнего события;
 - количество пропущенных некорректных строк.
+
 При обработке нескольких входных файлов данные объединяются в один общий отчёт.
-Пример отчёта
-```{
+
+Пример отчёта:
+
+```json
+{
     "total": 3,
     "levels": {
         "INFO": 1,
@@ -106,19 +133,24 @@ JSONL
 # Потоковая обработка
 
 Файлы обрабатываются построчно без загрузки всего содержимого в память.
+
 Для CSV используется csv.DictReader, а JSONL обрабатывается последовательным чтением строк файла.
+
 Это позволяет работать с большими входными файлами без загрузки всего файла в память.
 
 # Проверка данных
 
 Перед добавлением события в статистику проверяются:
+
 - наличие необходимых полей;
 - корректность timestamp;
 - допустимость значения level;
 - непустое значение source;
 - корректный тип message;
 - корректность JSON для JSONL-файлов.
+
 Для ошибок используются собственные исключения:
+
 - StreamStatsError - базовое исключение проекта;
 - UnsupportedFormatError - неподдерживаемый формат;
 - InvalidEventError - некорректное событие;
@@ -128,22 +160,31 @@ JSONL
 # Обработка ошибок
 
 Без --skip-invalid программа останавливается на первой некорректной строке.
+
 В сообщении об ошибке указывается файл и номер строки:
-```ERROR: data.jsonl: Некорректный JSON в строке 7
+
+```text
+ERROR: data.jsonl: Некорректный JSON в строке 7
 ```
 
 Код завершения программы в случае ошибки равен 2.
+
 При использовании --skip-invalid некорректные строки не останавливают обработку:
-```WARNING: Пропущена некорректная строка 7 в файле data.jsonl
+
+```text
+WARNING: Пропущена некорректная строка 7 в файле data.jsonl
 ```
 
 # Тестирование
 
 Для запуска всех тестов:
-```python3 -m pytest
+
+```bash
+python3 -m pytest
 ```
 
 Тесты проверяют:
+
 - разбор CSV;
 - разбор JSONL;
 - корректные и некорректные события;
@@ -161,12 +202,15 @@ JSONL
 
 # Проверка качества кода
 
-```ruff check .
+```bash
+ruff check .
 ```
 
 # Структура проекта
 
+```text
 lab_02/
+├── .gitignore
 ├── pyproject.toml
 ├── README.md
 ├── src/
@@ -181,8 +225,8 @@ lab_02/
 └── tests/                  #автоматические тесты
     ├── test_parsers.py
     └── test_cli.py
+```
 
 # Автор
 
-```Шапилова Екатерина, 104 группа.
-```
+Шапилова Екатерина, 104 группа.
