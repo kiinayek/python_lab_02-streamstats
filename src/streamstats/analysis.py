@@ -1,3 +1,6 @@
+from collections.abc import Iterable
+
+
 def ini_stat() -> dict:
     
     return {
@@ -11,7 +14,7 @@ def ini_stat() -> dict:
         }
 
 
-def update_stat(events: list, stat: dict) -> dict:
+def update_stat(events: Iterable[dict], stat: dict) -> dict:
     
     for event in events:
         stat["total"] += 1

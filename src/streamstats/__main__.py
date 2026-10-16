@@ -1,15 +1,16 @@
 import argparse
+import logging
 
 from .analysis import ini_stat, update_stat
-from .errors import StreamStatsError
+from .errors import CLIConfigurationError, StreamStatsError
 from .readers import read_file
 from .report import report
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
-    subparsers = parser.add_subparsers(dest="command")
-    
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
     analyze_parser = subparsers.add_parser("analyze")
     analyze_parser.add_argument("input", nargs="+")
     analyze_parser.add_argument(
@@ -28,6 +29,15 @@ def main(argv: list[str] | None = None) -> int:
 
     args = parser.parse_args(argv)
 
+    if args.skip_invalid:
+        logging.basicConfig(
+            level=logging.WARNING,
+            format="WARNING: %(message)s",
+        )
+
+    if args.command != "analyze":
+        raise CLIConfigurationError(f"Неизвестная команда: {args.command}")
+    
     stat = ini_stat()
     current_filename = None
 

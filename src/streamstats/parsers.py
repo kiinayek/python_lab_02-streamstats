@@ -16,7 +16,7 @@ def make_event(raw: dict[str, str], line_number: int) -> dict:
     message_raw = raw.get("message")
 
     if not isinstance(timestamp_raw, str) or not timestamp_raw:
-        raise InvalidTimestampError(f"Некорректная дата время в строке {line_number}")
+        raise InvalidTimestampError(f"Некорректная дата/время в строке {line_number}")
 
     if not isinstance(level_raw, str) or not level_raw or \
         level_raw not in ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]:
